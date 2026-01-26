@@ -1,10 +1,11 @@
 extends CharacterBody3D
 
 @onready var eyes: Node3D = $eyes
-@onready var camera: Camera3D = $eyes/Camera3D
+@onready var camera: Camera3D = $eyes/Node3D/Camera3D
+@onready var idk: Node3D = $eyes/Node3D
 
 const SPEED = 10.0
-const AIR_SLOW_MULT = 0.5
+const AIR_SLOW_MULT = 1.5
 const JUMP_VELOCITY = 4.5
 const JUMP_SPDBST = 1.5
 const ACCEL_SMOOTH = 5.0
@@ -20,8 +21,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		if event is InputEventMouseMotion:
 			eyes.rotate_y(-event.relative.x * mouse_sensitivity)
-			camera.rotate_x(-event.relative.y * mouse_sensitivity)
-			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-50), deg_to_rad(60))
+			idk.rotate_x(-event.relative.y * mouse_sensitivity)
+			#idk.rotation.x = clamp(camera.rotation.x, deg_to_rad(-50), deg_to_rad(60))
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -32,8 +33,19 @@ func _physics_process(delta: float) -> void:
 	var input_dir := Input.get_vector("strafe left", "strafe right", "forward", "backward")
 	var direction := (eyes.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
-	velocity.x = lerp(velocity.x, direction.x * SPEED, ACCEL_SMOOTH * delta)
-	velocity.z = lerp(velocity.z, direction.z * SPEED, ACCEL_SMOOTH * delta)
+	if !is_on_floor():
+		velocity.x = lerp(velocity.x, direction.x * SPEED, ACCEL_SMOOTH * delta * (1/AIR_SLOW_MULT))
+		velocity.z = lerp(velocity.z, direction.z * SPEED, ACCEL_SMOOTH * delta * (1/AIR_SLOW_MULT))
+	elif is_on_floor():
+		if direction.z == 0:
+			velocity.z = lerp(velocity.z, direction.z * SPEED, ACCEL_SMOOTH * delta * AIR_SLOW_MULT)
+		else:
+			velocity.z = lerp(velocity.z, direction.z * SPEED, ACCEL_SMOOTH * delta)
+		if direction.x == 0:
+			velocity.x = lerp(velocity.x, direction.x * SPEED, ACCEL_SMOOTH * delta * AIR_SLOW_MULT)
+		else:
+			velocity.x = lerp(velocity.x, direction.x * SPEED, ACCEL_SMOOTH * delta)
+		
 	
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
