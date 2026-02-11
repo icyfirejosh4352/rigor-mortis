@@ -3,11 +3,14 @@ extends CharacterBody3D
 @onready var eyes: Node3D = $eyes
 @onready var camera: Camera3D = $eyes/Node3D/Camera3D
 @onready var idk: Node3D = $eyes/Node3D
+@onready var head: CollisionShape3D = $CollisionShape3D2
 
 const SPEED = 10.0
-const AIR_SLOW_MULT = 1.5
-const JUMP_VELOCITY = 4.5
-const JUMP_SPDBST = 1.5
+const SLIDE_DEFAULT_SPEED = 12.0
+const AIR_SLOW_MULT = 2.5
+const GROUND_SLOW_MULT = 1.5
+const JUMP_VELOCITY = 6.0
+const JUMP_SPDBST = 1.8
 const ACCEL_SMOOTH = 5.0
 
 @export var mouse_sensitivity: float = 0.002
@@ -22,7 +25,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event is InputEventMouseMotion:
 			eyes.rotate_y(-event.relative.x * mouse_sensitivity)
 			idk.rotate_x(-event.relative.y * mouse_sensitivity)
-			#idk.rotation.x = clamp(camera.rotation.x, deg_to_rad(-50), deg_to_rad(60))
+			idk.rotation.x = clamp(idk.rotation.x, deg_to_rad(-50), deg_to_rad(60))
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -38,11 +41,11 @@ func _physics_process(delta: float) -> void:
 		velocity.z = lerp(velocity.z, direction.z * SPEED, ACCEL_SMOOTH * delta * (1/AIR_SLOW_MULT))
 	elif is_on_floor():
 		if direction.z == 0:
-			velocity.z = lerp(velocity.z, direction.z * SPEED, ACCEL_SMOOTH * delta * AIR_SLOW_MULT)
+			velocity.z = lerp(velocity.z, direction.z * SPEED, ACCEL_SMOOTH * delta * GROUND_SLOW_MULT)
 		else:
 			velocity.z = lerp(velocity.z, direction.z * SPEED, ACCEL_SMOOTH * delta)
 		if direction.x == 0:
-			velocity.x = lerp(velocity.x, direction.x * SPEED, ACCEL_SMOOTH * delta * AIR_SLOW_MULT)
+			velocity.x = lerp(velocity.x, direction.x * SPEED, ACCEL_SMOOTH * delta * GROUND_SLOW_MULT)
 		else:
 			velocity.x = lerp(velocity.x, direction.x * SPEED, ACCEL_SMOOTH * delta)
 		
