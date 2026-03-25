@@ -1,7 +1,7 @@
 # Licensing Information
 
 ## Software License (Code)
-The source code, scripts, and project configuration files are licensed under the MIT License. See the 'LICENSE-MIT.txt' file for details.
+The source code, scripts, and project configuration files are licensed under the MIT License. See the 'LICENSE' file for details.
 
 ## Asset License (Art, Audio, Models)
 All visual assets, 3D models, textures, sound effects, music, and dialogue text contained within the `/resources` folder are licensed under Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0). See the 'LICENSE-ASSETS.txt' for details.
