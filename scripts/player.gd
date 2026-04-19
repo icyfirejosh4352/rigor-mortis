@@ -12,6 +12,9 @@ extends CharacterBody3D
 # TODO: fix that ig
 @onready var head: CollisionShape3D = $CollisionShape3D2
 
+@onready var FullMesh: MeshInstance3D = $MeshInstance3D
+@onready var SlideMesh: MeshInstance3D = $MeshInstance3D2
+
 # Player default speed
 const SPEED = 10.0
 # Air resistance, ig
@@ -27,9 +30,12 @@ const ACCEL_SMOOTH = 5.0
 # friction during Sliding. less than Ground, more than Air.
 const SLIDE_SLOW = 0.2
 # Initial speed boost that the velocity of the x and z axes are multiplied.
-const SLIDE_SPDBST = 1.6
+const SLIDE_SPDBST = 2.0
 # minimum speed while sliding. could use this for crouching.
 const SLIDE_MINSPEED = 2.0
+
+# Whether or not the player is sliding. Idk when I'll use this, but nice to have.
+var IsSliding = false
 
 # mouse sensitivity.
 @export var mouse_sensitivity: float = 0.002
@@ -61,15 +67,34 @@ func _physics_process(delta: float) -> void:
 	if !is_on_floor():
 		velocity.x = lerp(velocity.x, direction.x * SPEED, ACCEL_SMOOTH * delta * (1/AIR_SLOW_MULT))
 		velocity.z = lerp(velocity.z, direction.z * SPEED, ACCEL_SMOOTH * delta * (1/AIR_SLOW_MULT))
+		IsSliding = false
+		
+		# Wallrunning.
+		# I'm sorry, I had to ask gemini for checking collsiding plane's normal.
+#		var collsion = move_and_collide(velocity * delta)
+#		if collsion:
+#			var normal = collsion.get_normal()
+#			var Ref = Vector3.UP
+#			var angle = rad_to_deg(normal.angle_to(Ref))
+#			print (angle)
+#			
+#			if angle >= 75 && angle <= 100:
+#				print ("Can Wallrun")
+			
 		
 	#All the important stuff is here.
 	elif is_on_floor():
+		# By default, assumes the player isn't sliding.
+		IsSliding = false
+		
 		# Multiplies velocity by SLIDE_SPDBST when the slide button is intially pressed.
 		if Input.is_action_just_pressed("slide"):
+			IsSliding = true
 			velocity = Vector3(velocity.x * SLIDE_SPDBST, velocity.y, velocity.z * SLIDE_SPDBST)
 			
 		# Lerps(I think) the velocity to the minimum sliding velocity.
 		if Input.is_action_pressed("slide"):
+			IsSliding = true
 			velocity = velocity.move_toward(Vector3(SLIDE_MINSPEED * direction.x, velocity.y, SLIDE_MINSPEED * direction.z), SLIDE_SLOW)
 			
 			# Disables the head collider.
@@ -103,5 +128,20 @@ func _physics_process(delta: float) -> void:
 		#TODO: findout if this screws with the other calculation.
 		velocity.x += direction.x * (SPEED * JUMP_SPDBST)
 		velocity.z += direction.z * (SPEED * JUMP_SPDBST)
+		
+	if IsSliding:
+		FullMesh.visible = false
+		SlideMesh.visible = true
+	else:
+		FullMesh.visible = true
+		SlideMesh.visible = false
 	
 	move_and_slide()
+	
+	if is_on_wall():
+		var wall_normal = get_wall_normal()
+		var wall_angle = rad_to_deg(wall_normal.angle_to(Vector3.UP))
+		print (wall_angle)
+		if wall_angle >= 75 && wall_angle <= 100:
+			print ("can wallrun")
+			velocity = Vector3.ZERO

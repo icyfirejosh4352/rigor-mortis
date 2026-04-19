@@ -28,6 +28,7 @@ size = Vector3(37.904053, 0.001, 20.007813)
 [sub_resource type="BoxMesh" id="BoxMesh_yqjtg"]
 
 [node name="game" type="Node3D" unique_id=577685630]
+transform = Transform3D(0.9999479, 0, 0.010209999, 0, 1, 0, -0.010209999, 0, 0.9999479, 0, 0, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1851348246]
 environment = SubResource("Environment_lnu2h")
@@ -86,3 +87,12 @@ transform = Transform3D(0.9787208, -0.20519647, 1.7938845e-08, -0.20519647, -0.9
 
 [node name="Node3D6" parent="." unique_id=2127619818 instance=ExtResource("2_yqjtg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.2023, -3.1248534, 1.4575214)
+
+[node name="Node3D7" parent="." unique_id=61465861 instance=ExtResource("2_yqjtg")]
+transform = Transform3D(0.99998766, 0.0048281974, 0.0012136819, -0.0048281974, 0.88112193, 0.47286448, 0.0012136819, -0.47286448, 0.8811344, 18.89642, -2.0028372, 22.67175)
+
+[node name="Node3D8" parent="." unique_id=770572982 instance=ExtResource("2_yqjtg")]
+transform = Transform3D(0.9999978, 0.0002810117, -0.0023789736, -0.002378972, 0.23299184, -0.9724762, 0.00028100796, 0.972479, 0.23299216, -25.944382, 2.39538, -7.3252697)
+
+[node name="Node3D9" parent="." unique_id=676891325 instance=ExtResource("2_yqjtg")]
+transform = Transform3D(-0.9999459, -0.010471872, -2.0408455e-08, -0.0024445918, 0.23343271, -0.9723704, 0.010182542, -0.9723169, -0.23344553, -26.095835, 2.39538, 7.5078163)
