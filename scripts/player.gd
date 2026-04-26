@@ -33,6 +33,8 @@ const SLIDE_SLOW = 0.2
 const SLIDE_SPDBST = 2.0
 # minimum speed while sliding. could use this for crouching.
 const SLIDE_MINSPEED = 2.0
+# Wallrunning speed multiplier.
+const WALLRUN_MULT = 2
 
 # Whether or not the player is sliding. Idk when I'll use this, but nice to have.
 var IsSliding = false
@@ -141,7 +143,26 @@ func _physics_process(delta: float) -> void:
 	if is_on_wall():
 		var wall_normal = get_wall_normal()
 		var wall_angle = rad_to_deg(wall_normal.angle_to(Vector3.UP))
-		print (wall_angle)
+		
+#		var flat_wallN = Vector3(wall_normal.x, 0, wall_normal.z).normalized()
+#		var flat_LookDir = Vector3(-global_transform.basis.z.x, 0, -global_transform.basis.z.z).normalized()
+		
+#		var angle_diff = flat_wallN.signed_angle_to(flat_LookDir, Vector3.UP)
+		var LookMult = 0
+		if input_dir.y > 0:
+			LookMult = -1
+		elif input_dir.y < 0:
+			LookMult = 1
+#		print ("LookMult: ",LookMult)
+#		print ("wall_angle: ", wall_angle)
+#		print("angle_diff: ", angle_diff)
+#		print ("flat wallN: ", flat_wallN)
+#		print ("flat LookDir: ", flat_LookDir)
 		if wall_angle >= 75 && wall_angle <= 100:
-			print ("can wallrun")
-			velocity = Vector3.ZERO
+#			print ("can wallrun")
+#			print (wall_normal)
+			var rotatedNormal = wall_normal.rotated(Vector3.UP, deg_to_rad(90 * LookMult)).normalized()
+			velocity = rotatedNormal * SPEED * WALLRUN_MULT
+			print (velocity)
+			
+			# need to rework ENTIRE movement system to use state machines. highly inefficient to do everything like this.

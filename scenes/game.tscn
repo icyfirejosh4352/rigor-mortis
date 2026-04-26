@@ -50,6 +50,11 @@ transform = Transform3D(18.759586, 0, 0, 0, 1, 0, 0, 0, 10, 0, 0, 0)
 mesh = SubResource("PlaneMesh_lnu2h")
 skeleton = NodePath("../../..")
 
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="platform/StaticBody3D/CollisionShape3D" unique_id=2009811895]
+transform = Transform3D(18.759592, 0, -1.4901161e-08, 0, 1, 0, 4.4703484e-08, 0, 10.000003, -144.41808, -22.141531, -1.4745852)
+mesh = SubResource("PlaneMesh_lnu2h")
+skeleton = NodePath("../../..")
+
 [node name="player" parent="." unique_id=1356530621 instance=ExtResource("1_uwrxv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2689495, 6.63983, 0.15692139)
 
@@ -92,7 +97,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.2023, -3.1248534, 1.457521
 transform = Transform3D(0.99998766, 0.0048281974, 0.0012136819, -0.0048281974, 0.88112193, 0.47286448, 0.0012136819, -0.47286448, 0.8811344, 18.89642, -2.0028372, 22.67175)
 
 [node name="Node3D8" parent="." unique_id=770572982 instance=ExtResource("2_yqjtg")]
-transform = Transform3D(0.9999978, 0.0002810117, -0.0023789736, -0.002378972, 0.23299184, -0.9724762, 0.00028100796, 0.972479, 0.23299216, -25.944382, 2.39538, -7.3252697)
+transform = Transform3D(4.42, 0, 2.7755576e-17, 0, -4.371139e-08, -1, 0, 1, -4.37114e-08, -100.18473, -8.498196, -2.0116172)
 
 [node name="Node3D9" parent="." unique_id=676891325 instance=ExtResource("2_yqjtg")]
-transform = Transform3D(-0.9999459, -0.010471872, -2.0408455e-08, -0.0024445918, 0.23343271, -0.9723704, 0.010182542, -0.9723169, -0.23344553, -26.095835, 2.39538, 7.5078163)
+transform = Transform3D(-5.5650005, 8.754432e-08, -3.858025e-15, 0, -4.371139e-08, -1, -4.8801303e-07, -1, 4.3711392e-08, -55.2798, 2.39538, 7.209833)
