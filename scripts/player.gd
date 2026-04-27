@@ -161,7 +161,7 @@ func _physics_process(delta: float) -> void:
 		if wall_angle >= 75 && wall_angle <= 100:
 #			print ("can wallrun")
 #			print (wall_normal)
-			var rotatedNormal = wall_normal.rotated(Vector3.UP, deg_to_rad(90 * LookMult)).normalized()
+			var rotatedNormal = wall_normal.rotated(Vector3.UP, deg_to_rad(90)).normalized()
 			velocity = rotatedNormal * SPEED * WALLRUN_MULT
 			print (velocity)
 			

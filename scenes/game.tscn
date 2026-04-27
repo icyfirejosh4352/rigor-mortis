@@ -101,3 +101,9 @@ transform = Transform3D(4.42, 0, 2.7755576e-17, 0, -4.371139e-08, -1, 0, 1, -4.3
 
 [node name="Node3D9" parent="." unique_id=676891325 instance=ExtResource("2_yqjtg")]
 transform = Transform3D(-5.5650005, 8.754432e-08, -3.858025e-15, 0, -4.371139e-08, -1, -4.8801303e-07, -1, 4.3711392e-08, -55.2798, 2.39538, 7.209833)
+
+[node name="Node3D10" parent="." unique_id=1639382821 instance=ExtResource("2_yqjtg")]
+transform = Transform3D(-5.565002, 8.754432e-08, -3.8857806e-15, 0, -4.371139e-08, -1, -4.917383e-07, -1, 4.3711402e-08, 69.42891, 2.39538, 4.7622643)
+
+[node name="Node3D11" parent="." unique_id=929191500 instance=ExtResource("2_yqjtg")]
+transform = Transform3D(5.5650043, 0, 5.551115e-17, 0, -4.371139e-08, -1, 1.1175871e-08, 1, -4.3711402e-08, 70.50802, -4.324007, -7.8483143)
