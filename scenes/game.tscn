@@ -87,8 +87,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.468946, 1.125535, -41.746
 [node name="Node3D4" parent="." unique_id=1517282573 instance=ExtResource("2_yqjtg")]
 transform = Transform3D(0.97748226, -0.21101773, 0, 0.21101773, 0.97748226, 0, 0, 0, 1, -1.6778426, 0, -58.027668)
 
+[node name="Node3D12" parent="." unique_id=790865842 instance=ExtResource("2_yqjtg")]
+transform = Transform3D(0.96122736, 0.079738624, -0.0032007769, -0.07629435, 1.0046272, -0.02178054, 0.00019082986, 0.002985564, 7.4145346, -2.0596752, 0, -120.98582)
+
 [node name="Node3D5" parent="." unique_id=1028108194 instance=ExtResource("2_yqjtg")]
-transform = Transform3D(0.9787208, -0.20519647, 1.7938845e-08, -0.20519647, -0.9787208, 8.556249e-08, 0, -8.742278e-08, -1, 13.734924, 3.8064885, -0.62195253)
+transform = Transform3D(-1.0000001, 8.742278e-08, 0, -8.7422784e-08, -0.99999994, 0, 0, 0, 1, 12.670995, 2.1920247, -0.632816)
 
 [node name="Node3D6" parent="." unique_id=2127619818 instance=ExtResource("2_yqjtg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.2023, -3.1248534, 1.4575214)
