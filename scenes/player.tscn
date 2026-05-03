@@ -12,6 +12,8 @@ size = Vector3(0.72558594, 1.2973633, 0.8222656)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_3vyb7"]
 
 [node name="CharacterBody3D" type="CharacterBody3D" unique_id=1325180929]
+floor_max_angle = 0.83775806
+floor_snap_length = 0.4
 script = ExtResource("1_3vyb7")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=155263430]

@@ -1,5 +1,4 @@
 extends CharacterBody3D
-
 # Parent node for camera and idk.
 @onready var eyes: Node3D = $eyes
 # The camera.
@@ -35,6 +34,10 @@ const SLIDE_SPDBST = 3.0
 const SLIDE_MINSPEED = 2.0
 # Wallrunning speed multiplier.
 const WALLRUN_MULT = 2
+# Weight considered when sliding down a slope.
+const SLIDE_WEIGHT = 20.0
+# Multiplier for weight when sliding up a slope (to slow down).
+const UPHILL_WMULT = 2.0
 
 # Whether or not the player is sliding. Idk when I'll use this, but nice to have.
 var IsSliding = false
@@ -66,7 +69,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 # All the physics calculations.
 func _physics_process(delta: float) -> void:
-	
+	velocity += get_gravity() * delta
 	if Input.is_action_pressed("slide") && Input.is_action_pressed("jump"):
 		print("both pressed")
 	
@@ -76,7 +79,6 @@ func _physics_process(delta: float) -> void:
 	
 	#Air friction calculation. only occurs while in air. (I think)
 	if !is_on_floor():
-		velocity += get_gravity() * delta
 		velocity.x = lerp(velocity.x, direction.x * SPEED, ACCEL_SMOOTH * delta * (1/AIR_SLOW_MULT))
 		velocity.z = lerp(velocity.z, direction.z * SPEED, ACCEL_SMOOTH * delta * (1/AIR_SLOW_MULT))
 		PlayerState = PlayerStates.DEFAULT
@@ -86,10 +88,15 @@ func _physics_process(delta: float) -> void:
 
 	#All the important stuff is here.
 	elif is_on_floor():
+		var floor_normal = get_floor_normal()
 		PlayerState = PlayerStates.DEFAULT
 		if Input.is_action_just_pressed("slide"):
 			PlayerState = PlayerStates.SLIDING
-			velocity = Vector3(velocity.x * SLIDE_SPDBST, velocity.y, velocity.z * SLIDE_SPDBST)
+			#velocity = Vector3(velocity.x * SLIDE_SPDBST, velocity.y, velocity.z * SLIDE_SPDBST)
+			velocity.x *= SLIDE_SPDBST
+			velocity.z *= SLIDE_SPDBST
+			velocity = velocity.slide(floor_normal).normalized() * velocity.length()
+#			velocity = velocity.slide(get_floor_normal()).normalized() * velocity.length()
 		elif Input.is_action_pressed("slide"):
 			PlayerState = PlayerStates.SLIDING
 			
@@ -107,7 +114,6 @@ func _physics_process(delta: float) -> void:
 
 				# If no input in either axes (x or z), uses different method (just lerp) to calculate velocity.
 				# Definitely a better way to do this exists, but it's 1:00 and I wanna sleep.
-				# also think this messes with the previous elif clause's velocity calculation. possibly. I dont care, movement feels okay.
 				# TODO: fix ts 
 				else:
 					if direction.z == 0:
@@ -124,7 +130,17 @@ func _physics_process(delta: float) -> void:
 					velocity.x += direction.x * (SPEED * JUMP_SPDBST)
 					velocity.z += direction.z * (SPEED * JUMP_SPDBST)
 			PlayerStates.SLIDING:
-				velocity = velocity.move_toward(Vector3(SLIDE_MINSPEED * direction.x, velocity.y, SLIDE_MINSPEED * direction.z), SLIDE_SLOW)
+				# this part is from AI :(
+				var slope_dir = Vector3.DOWN.slide(floor_normal).normalized()
+				var move_dot_slope = velocity.dot(slope_dir)
+				if floor_normal.y < 0.99:
+					var steepness = 1.0 - floor_normal.y
+					if move_dot_slope > 0:
+						velocity += slope_dir * steepness * SPEED * delta * SLIDE_WEIGHT
+					else:
+						velocity += slope_dir * steepness * SPEED * delta * SLIDE_WEIGHT * UPHILL_WMULT
+				else:
+					velocity = velocity.move_toward(Vector3(SLIDE_MINSPEED * direction.x, velocity.y, SLIDE_MINSPEED * direction.z), SLIDE_SLOW)
 				FullMesh.visible = false
 				SlideMesh.visible = true
 				head.disabled = true
