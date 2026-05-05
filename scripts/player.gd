@@ -158,8 +158,13 @@ func _physics_process(delta: float) -> void:
 					velocity.x += direction.x * (SPEED * JUMP_SPDBST)
 					velocity.z += direction.z * (SPEED * JUMP_SPDBST)
 
-	
+	# what is this bro :sob:
 	move_and_slide()
+	
+	if is_on_wall():
+		velocity -= get_gravity() * delta
+		var wall_normal = get_wall_normal()
+		velocity = velocity.slide(wall_normal).normalized() * velocity.length()
 	
 #	if is_on_wall():
 #		var wall_normal = get_wall_normal()
